@@ -20,6 +20,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.PlainTooltipBox
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -91,20 +92,26 @@ fun MainScreen(modifier: Modifier) {
                         selected = bottomNavState == index,
                         onClick = { bottomNavState = index },
                         icon = {
-                            BadgedBox(
-                                badge = {
-                                    if (item.hasBadge) Badge {}
-                                    if (item.badgeNum != 0) Badge {
-                                        Text(text = item.badgeNum.toString())
-                                    }
-                                }
+                            PlainTooltipBox(
+                                tooltip = { Text(text = item.title) },
+                                modifier = Modifier.padding(bottom = 14.dp)
                             ) {
-                                Icon(
-                                    imageVector = if (bottomNavState == index) {
-                                        item.selectedIcon
-                                    } else item.unselectedIcon,
-                                    contentDescription = item.title
-                                )
+                                BadgedBox(
+                                    modifier = Modifier.tooltipAnchor(),
+                                    badge = {
+                                        if (item.hasBadge) Badge {}
+                                        if (item.badgeNum != 0) Badge {
+                                            Text(text = item.badgeNum.toString())
+                                        }
+                                    }
+                                ) {
+                                    Icon(
+                                        imageVector = if (bottomNavState == index) {
+                                            item.selectedIcon
+                                        } else item.unselectedIcon,
+                                        contentDescription = item.title
+                                    )
+                                }
                             }
                         },
                         label = {
